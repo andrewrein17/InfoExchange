@@ -17,7 +17,7 @@ builder.Services.AddSingleton<UserInfoGlobal>();
 
 //Put before the build line below
 builder.Services.AddDbContextFactory<UserDBContext>(opt =>
-    opt.UseSqlServer("Data Source=infoexchangedbserver.database.windows.net;Initial Catalog=InfoExchange_db;User ID=andrewrein17;Password=*******;Trusted_Connection=False;Connect Timeout=60;Encrypt=True;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False"));
+    opt.UseSqlServer("Data Source=infoexchangedbserver.database.windows.net;Initial Catalog=InfoExchange_db;User ID=andrewrein17;Password=********;Trusted_Connection=False;Connect Timeout=60;Encrypt=True;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False"));
 
 builder.Services.AddDbContextFactory<PostDBContext>(opt =>
     opt.UseSqlServer("Data Source=infoexchangedbserver.database.windows.net;Initial Catalog=InfoExchange_db;User ID=andrewrein17;Password=********;Trusted_Connection=False;Connect Timeout=60;Encrypt=True;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False"));
