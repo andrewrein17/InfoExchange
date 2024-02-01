@@ -1,0 +1,67 @@
+[b-y274uo2wpy] *{
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+.main-post-container[b-y274uo2wpy]  {
+    height: 50%;
+    width: 80%;
+    box-shadow: 6px 4px 4px black;
+    display: block;
+    margin: auto;
+    margin-top: 5%;
+    border: thin solid;
+    font-size: large;
+    font-weight: bold;
+    padding: 1%;
+}
+.post-list[b-y274uo2wpy]{
+    list-style: none;
+    padding: 5px;
+}
+.post[b-y274uo2wpy]{
+    border: thin solid;
+    font-size: medium;
+    font-weight: normal;
+    margin: 5px;
+    padding: 5px;
+}
+[b-y274uo2wpy] .title-box{
+    width: 100%;
+    margin: auto;
+    display: block;
+}
+.text-box[b-y274uo2wpy]{
+    width: 100%;
+    display: block;
+}
+[b-y274uo2wpy] .post-box {
+    width: 100%;
+    max-width: 100%;
+    margin: 5px, 5px, 10px, 5px;
+    /*display: flex;*/
+    padding: 5px;
+}
+.submit-post[b-y274uo2wpy]{
+    margin: 5px;
+}
+.post-title[b-y274uo2wpy]{
+    margin: 2px;
+    padding: 2px;
+    font-weight: bold;
+    font-size: 25px;
+}
+.post-author[b-y274uo2wpy], .post-date[b-y274uo2wpy]{
+    font-size: smaller;
+    text-align: right;
+}
+
+[b-y274uo2wpy] a , [b-y274uo2wpy] a:visited{
+    color: inherit;
+}
+[b-y274uo2wpy] a:hover{
+    color: darkgrey;
+}
+[b-y274uo2wpy] .vote{
+    height: 20%;
+    width: 20%;
+}
+

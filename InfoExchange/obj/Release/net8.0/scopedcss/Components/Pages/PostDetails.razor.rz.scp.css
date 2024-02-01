@@ -1,0 +1,75 @@
+[b-rj42scjuce] * {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+.post-container[b-rj42scjuce] {
+    height: 50%;
+    width: 65%;
+    /*box-shadow: 6px 4px 4px black;*/
+    display: block;
+    margin: auto;
+    margin-top: 5%;
+    border-left: thin solid;
+    border-right: thin solid;
+    /*font-size: large;*/
+    /*font-weight: bold;*/
+    padding: 1%;
+}
+.post-title[b-rj42scjuce]{
+    font-size: 30px;
+}
+.post-date[b-rj42scjuce]{
+    text-align: left;
+    font-size: smaller;
+    padding-bottom: 10px;
+    display: inline;
+}
+.post-author[b-rj42scjuce] {
+    display: inline;
+    font-size: smaller;
+    padding-right: 10px;
+}
+.post-text[b-rj42scjuce]{
+    margin: 10px;
+}
+.post-bar[b-rj42scjuce] {
+    list-style: none;
+    border-bottom: thin solid;
+    padding: 0;
+}
+.text-box[b-rj42scjuce] {
+    width: 100%;
+    display: block;
+}
+[b-rj42scjuce] .reply-box {
+    width: 100%;
+    max-width: 100%;
+/*    margin: 5px, 5px, 10px, 5px;*/
+    /*display: flex;*/
+    padding: 5px;
+    /*padding-top: -50px;*/
+    margin-top: -15px;
+}
+.reply-label[b-rj42scjuce]{
+    font-size: 22px;
+    margin-top: 50px;
+}
+.reply-list[b-rj42scjuce]{
+    list-style: none;
+    margin-top: 50px;
+    justify-content: center;
+}
+.reply[b-rj42scjuce] {
+    border-top: thin solid;
+    font-size: medium;
+    font-weight: normal;
+    margin: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.reply-author[b-rj42scjuce], .reply-date[b-rj42scjuce] {
+    font-size: smaller;
+    text-align: right;
+}
+.reply-text[b-rj42scjuce]{
+    padding-top: 10px;
+}

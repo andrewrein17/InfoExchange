@@ -1,0 +1,84 @@
+﻿@page "/login"
+@rendermode InteractiveServer
+@using InfoExchange.Models;
+@using InfoExchange.Controllers;
+@using Microsoft.AspNetCore.Mvc
+@using Microsoft.EntityFrameworkCore
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+
+@inject IDbContextFactory<UserDBContext> DbFactory
+@inject UserInfoGlobal userInfoGlobal
+@inject ProtectedSessionStorage ProtectedSessionStore
+
+
+<PageTitle>Log in</PageTitle>
+
+<div>
+    <p>Log in to InfoExchange!</p>
+</div>
+
+@* Log in form *@
+<EditForm Model="@User" OnSubmit="@UserSubmit" FormName="Login">
+    <div>
+        <label for="username">Username:</label>
+        <input type="text" id="username" @bind-value="@User.Username" />
+    </div>
+    <div>
+        <label for="password">Password:</label>
+        <input type="password" id="password" @bind-value="@User.Pass" />
+    </div>
+    <button type="submit">Submit</button>
+</EditForm>
+
+@* Diplays error if user not found *@
+@if (showError)
+{
+    <p>Error: Invalid username or password!</p>
+}
+else if (found)
+{
+    <p>Welcome, @User.Username</p>
+}
+
+@code {
+
+
+    private bool found = false;
+    private bool showError = false;
+    User User = new User();
+
+    IEnumerable<User>? users;
+
+    // Calls API to check username and password
+    protected async Task UserSubmit()
+    {
+        if(User.Username == null || User.Pass == null)
+        {
+            showError = true;
+            return;
+        }
+
+        using var context = DbFactory.CreateDbContext();
+        UserController userController = new UserController(context);
+        users = userController.GetUsers(); 
+        foreach (User u in users)
+        {
+            // Validates user name and password from database
+            if ((User.Username == u.Username) && (User.Pass == u.Pass))
+            {
+                found = true;
+            }
+        }
+
+        if (found)
+        {
+            await ProtectedSessionStore.SetAsync("Username", User.Username);
+
+        }
+        else
+        {
+            showError = true;
+        }
+    }
+
+}

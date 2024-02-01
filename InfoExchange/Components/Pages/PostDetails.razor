@@ -1,0 +1,86 @@
+﻿@page "/post/{PostId}"
+@rendermode InteractiveServer
+@using InfoExchange.Models;
+@using InfoExchange.Controllers;
+@using Microsoft.AspNetCore.Mvc
+@using Microsoft.EntityFrameworkCore
+@using System.Text
+@inject UserInfoGlobal userInfoGlobal
+@inject IDbContextFactory<PostDBContext> DbFactory
+
+<i class='fas fa-arrow-left'></i>
+
+@* Sets up original post view *@
+<div class="post-container">
+    <div class="post-title">@OriginalPost.PostTitle</div>
+    <ul class="post-bar">
+        <li class="post-author">Posted by: @OriginalPost.Username</li>
+        <li class="post-date">Asked on: @OriginalPost.Date.ToString("M/d/yyyy")</li>
+    </ul>
+    <div class="post-text">@OriginalPost.PostText</div>
+
+    @* Reply input section *@
+    <div class="reply-label">Your Reply</div>
+    <EditForm Model="@Reply" OnSubmit="@SubmitReply" FormName="Post">
+        <div class="text-box">
+            <label for="new-reply"></label>
+            <InputTextArea id="new-reply" class="reply-box" placeholder="Enter reply..." @bind-Value="@Reply.PostText" />
+        </div>
+        <button type="submit" class="submit-post">Post</button>
+    </EditForm>
+
+    @* Displays replies gotten from API *@
+    <ul class="reply-list">
+        @foreach (Post reply in Replies)
+        {
+            <li class="reply">
+                <div class="reply-text">@reply.PostText</div>
+                <div class="reply-author">Posted by: @reply.Username</div>
+                <div class="reply-date">Replied on: @reply.Date.ToString("M/d/yyyy")</div>
+            </li>
+        }
+    </ul>
+</div>
+
+
+
+@code {
+
+    [Parameter]
+    public string PostId { get; set; }
+    public Post OriginalPost = new Post();
+    public Post Reply = new Post();
+    IEnumerable<Post>? Replies;
+
+    protected override void OnInitialized()
+    {
+        using var context = DbFactory.CreateDbContext();
+        PostController postController = new PostController(context);
+        OriginalPost = postController.GetPost(Int32.Parse(PostId)); 
+        Replies = postController.GetReplies(OriginalPost.ID); // Gets all replies for given post
+    }
+
+    // Calls API to insert new reply to the post
+    protected async Task SubmitReply()
+    {
+        DateTime now = DateTime.Now;
+
+        Reply.Username = userInfoGlobal.Username;
+
+        if (Reply.Username == null)
+        {
+            Reply.Username = "USERNAME WAS NULL";
+        }
+
+        Reply.Date = now;
+        Reply.Reply = OriginalPost.ID;
+
+        using var context = DbFactory.CreateDbContext();
+        PostController postController = new PostController(context);
+        await postController.AddPost(Reply);
+
+        // Resets page view
+        Reply = new Post();
+        OnInitialized();
+    }
+}

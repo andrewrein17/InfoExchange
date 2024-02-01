@@ -1,0 +1,72 @@
+﻿@page "/register"
+@rendermode InteractiveServer
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+@using InfoExchange.Models;
+@using InfoExchange.Controllers;
+@using Microsoft.AspNetCore.Mvc
+@using Microsoft.EntityFrameworkCore
+
+@inject ProtectedSessionStorage ProtectedSessionStore
+@inject UserInfoGlobal userInfoGlobal
+@inject IDbContextFactory<UserDBContext> DbFactory
+
+
+<PageTitle>Register</PageTitle>
+
+<div>Register for InfoExchange!</div>
+
+@* Register form *@
+<EditForm Model="@NewUser" OnSubmit="CreateUser" FormName="Register">
+    <div>
+        <label for="username">Enter Username:</label>
+        <input type="text" id="username" @bind-value="@NewUser.Username" />
+    </div>
+    <div>
+        <label for="password">Enter Password:</label>
+        <input type="password" id="password" @bind-value="@NewUser.Pass" />
+    </div>
+    <button type="submit" value="Save">Submit</button>
+</EditForm>
+
+@if (showError)
+{
+    <p>Error: Invalid username or password!</p>
+}else if (userExists){
+    <p>Error: Username already in use!</p>
+}
+
+@code {
+    protected User NewUser = new User();
+    protected bool showError = false;
+    protected bool userExists = false;
+    IEnumerable<User>? users;
+
+    // Calls API to insert a new user
+    private async Task CreateUser()
+    {
+        if(NewUser.Username == null || NewUser.Pass == null)
+        {
+            showError = true;
+            return;
+        }
+
+        using var context = DbFactory.CreateDbContext();
+        UserController userController = new UserController(context);
+
+        users = userController.GetUsers();
+
+        foreach(User u in users)
+        {
+            if(NewUser.Username == u.Username)
+            {
+                userExists = true;
+                return;
+            }
+        }
+
+        await ProtectedSessionStore.SetAsync("Username", NewUser.Username);
+
+        await userController.AddUser(NewUser);
+    }
+
+}

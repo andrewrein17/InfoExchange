@@ -1,0 +1,145 @@
+﻿@page "/"
+@rendermode InteractiveServer
+@using InfoExchange.Models;
+@using InfoExchange.Controllers;
+@using Microsoft.AspNetCore.Mvc
+@using Microsoft.EntityFrameworkCore
+@using System.Text
+@using static System.Runtime.InteropServices.JavaScript.JSType
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+
+@inject UserInfoGlobal userInfoGlobal
+@inject IDbContextFactory<PostDBContext> DbFactory
+@inject ProtectedSessionStorage ProtectedSessionStore
+
+<PageTitle>Home</PageTitle>
+
+<h1>Welcome to InfoExchange!</h1>
+
+@* @if (userInfoGlobal.Username != null)
+{
+    <p>Welcome, @userInfoGlobal.Username</p>
+} *@
+@if (Username != null)
+{
+    <p>Logged in as: @Username</p>
+}
+else
+{
+    <p>Please log in or register to post!</p>
+}
+
+<div class="main-post-container">
+    Posts
+    <button class="post-button" @onclick="DisplayPostWindow">New Post</button>
+    @if (ShowPostWindow)
+    {
+        // Form for a new post
+        <EditForm Model="@NewPost" OnSubmit="@SubmitPost" FormName="Post">
+            <div class="title-box-container">
+                <label for="title"></label>
+                <InputText id="title" class="title-box" placeholder="Post title" @bind-Value="@NewPost.PostTitle" />
+            </div>
+            <div class="text-box">
+                <label for="new-post"></label>
+                <InputTextArea id="new-post" class="post-box" placeholder="Enter post..." @bind-Value="@NewPost.PostText" />
+            </div>
+
+            @* Checks that the user is logged in before being allowed to post *@
+
+            @if (Username == null)
+            {
+                <p style="color: red">You must be logged in to post!</p>
+            }
+            else
+            {
+                <button type="submit" class="submit-post">Submit</button>
+            }
+        </EditForm>
+    }
+    <ul class="post-list">
+        @foreach (Post post in posts)
+        {
+            // Ensures that only posts, not replies are loaded
+            if (post.Reply == null)
+            {
+                // Displays the various components of the post
+                <li class="post">
+                    <a href="@($"post/{post.ID}")" class="post-title" style="text-decoration:none">@post.PostTitle</a>
+                    <div>@post.PostText</div>
+                    <div class="post-author">Posted by: @post.Username</div>
+                    <div class="post-date">Asked on: @post.Date.ToString("M/d/yyyy")</div>
+
+                    @* Checks user permissions for deleting posts. Users can delete their own posts and admins can delete all *@
+
+                    @if (Username == post.Username || Username == "admin")
+                    {
+                        <button @onclick="@(e => DeletePost(post))">Delete</button>
+                    }
+                </li>
+            }
+        }
+    </ul>
+</div>
+
+@code {
+    Post NewPost = new Post();
+    IEnumerable<Post>? posts;
+    protected bool ShowPostWindow = false;
+    protected string? Username;
+
+    // Only displays the post window when the 'new post' button is clicked
+    protected void DisplayPostWindow()
+    {
+        ShowPostWindow = !ShowPostWindow;
+    }
+
+    //Gets posts the be displayed on home page 
+    protected override async Task OnInitializedAsync()
+    {
+        using var context = DbFactory.CreateDbContext();
+        PostController postController = new PostController(context);
+        posts = postController.GetPosts(); // Get all posts from API call
+        posts = posts.Reverse();
+
+        try
+        {
+            var result = await ProtectedSessionStore.GetAsync<string>("Username");
+            Username = result.Success ? result.Value : null;
+        }
+        catch (InvalidOperationException)
+        {
+            
+        }
+    }
+
+
+    // Calls controller API to insert a new post into database
+    protected async Task SubmitPost()
+    {
+
+        DateTime now = DateTime.Now;
+
+        NewPost.Username = Username;
+
+        NewPost.Date = now;
+
+        using var context = DbFactory.CreateDbContext();
+        PostController postController = new PostController(context);
+        await postController.AddPost(NewPost);
+
+        // Resets page view
+        DisplayPostWindow();
+        NewPost = new Post();
+        await OnInitializedAsync();
+    }
+
+    // Calls controller API to delete a post from the database
+    protected async Task DeletePost(Post post)
+    {
+        using var context = DbFactory.CreateDbContext();
+        PostController postController = new PostController(context);
+        await postController.DeletePost(post);
+        await OnInitializedAsync();
+    }
+}

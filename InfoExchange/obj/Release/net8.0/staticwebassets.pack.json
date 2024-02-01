@@ -1,0 +1,49 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\Andy\\source\\repos\\InfoExchange\\InfoExchange\\obj\\Release\\net8.0\\scopedcss\\projectbundle\\InfoExchange.bundle.scp.css",
+      "PackagePath": "staticwebassets\\InfoExchange.bundle.scp.css"
+    },
+    {
+      "Id": "C:\\Users\\Andy\\source\\repos\\InfoExchange\\InfoExchange\\wwwroot\\app.css",
+      "PackagePath": "staticwebassets\\app.css"
+    },
+    {
+      "Id": "C:\\Users\\Andy\\source\\repos\\InfoExchange\\InfoExchange\\wwwroot\\bootstrap\\bootstrap.min.css",
+      "PackagePath": "staticwebassets\\bootstrap\\bootstrap.min.css"
+    },
+    {
+      "Id": "C:\\Users\\Andy\\source\\repos\\InfoExchange\\InfoExchange\\wwwroot\\bootstrap\\bootstrap.min.css.map",
+      "PackagePath": "staticwebassets\\bootstrap\\bootstrap.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\Andy\\source\\repos\\InfoExchange\\InfoExchange\\wwwroot\\down-arrow-download-svgrepo-com.svg",
+      "PackagePath": "staticwebassets\\down-arrow-download-svgrepo-com.svg"
+    },
+    {
+      "Id": "C:\\Users\\Andy\\source\\repos\\InfoExchange\\InfoExchange\\wwwroot\\favicon.png",
+      "PackagePath": "staticwebassets\\favicon.png"
+    },
+    {
+      "Id": "C:\\Users\\Andy\\source\\repos\\InfoExchange\\InfoExchange\\wwwroot\\up-arrow-svgrepo-com.svg",
+      "PackagePath": "staticwebassets\\up-arrow-svgrepo-com.svg"
+    },
+    {
+      "Id": "obj\\Release\\net8.0\\staticwebassets\\msbuild.InfoExchange.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Release\\net8.0\\staticwebassets\\msbuild.build.InfoExchange.props",
+      "PackagePath": "build\\InfoExchange.props"
+    },
+    {
+      "Id": "obj\\Release\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.InfoExchange.props",
+      "PackagePath": "buildMultiTargeting\\InfoExchange.props"
+    },
+    {
+      "Id": "obj\\Release\\net8.0\\staticwebassets\\msbuild.buildTransitive.InfoExchange.props",
+      "PackagePath": "buildTransitive\\InfoExchange.props"
+    }
+  ],
+  "ElementsToRemove": []
+}
